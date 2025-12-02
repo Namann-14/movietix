@@ -13,27 +13,19 @@
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
-[🚀 Live Demo](#-demo--live-link) · [📸 Screenshots](#-screenshots) · [🛠 Installation](#-installation--setup) · [🤝 Contributing](#-contributing)
+ [🛠 Installation](#-installation--setup) · [🤝 Contributing](#-contributing)
 
 </div>
 
 ---
 
-## 🚀 Demo / Live Link
-
-Experience MovieTix live:
-
-[![Live Demo](https://img.shields.io/badge/🎬_Live_Demo-Visit_MovieTix-FF6B6B?style=for-the-badge)](https://movietix.vercel.app)
-
-> **Note:** Backend services are hosted separately. Initial load may take a few seconds due to cold start.
-
----
-
-## 📸 Screenshots
-
 <div align="center">
 
-![MovieTix Landing Page](https://via.placeholder.com/1200x630/1a1a2e/ffffff?text=MovieTix+Landing+Page)
+
+
+<img width="1266" height="669" alt="movitix land" src="https://github.com/user-attachments/assets/ed4e3ff1-ae92-4b25-b689-7329b50a590e" />
+
+
 
 *Landing page showcasing the latest movies and seamless booking experience*
 
