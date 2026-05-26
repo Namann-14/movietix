@@ -30,13 +30,20 @@ if %ERRORLEVEL% neq 0 (
     echo %YELLOW%⚠️  Backend services are not running!%RESET%
     echo %BLUE%🚀 Starting backend services...%RESET%
     
-    :: Navigate to backend directory and start services
-    pushd "%~dp0\..\backend"
-    if exist "run-all-services.bat" (
-        call run-all-services.bat
+    :: Navigate to root directory and start backend services with Docker Compose
+    pushd "%~dp0\.."
+    if exist "docker-compose.yml" (
+        echo %YELLOW%📦 Building and starting backend services with Docker Compose from root...%RESET%
+        docker-compose up -d api-gateway
     ) else (
-        echo %YELLOW%📦 Building and starting services with Docker Compose...%RESET%
-        docker-compose up -d
+        pushd backend
+        if exist "run-all-services.bat" (
+            call run-all-services.bat
+        ) else (
+            echo %YELLOW%📦 Building and starting backend services with Docker Compose...%RESET%
+            docker-compose up -d api-gateway
+        )
+        popd
     )
     popd
     

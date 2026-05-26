@@ -1,13 +1,14 @@
 services:
   # MySQL Databases
   mysql-user:
-    image: mysql:8.0
+    image: mysql/mysql-server:8.0
     container_name: mysql-user
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: user_service_db
       MYSQL_USER: user_service
       MYSQL_PASSWORD: userpassword
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3316:3306"
     volumes:
@@ -16,13 +17,14 @@ services:
       - movietix-network
 
   mysql-movie:
-    image: mysql:8.0
+    image: mysql/mysql-server:8.0
     container_name: mysql-movie
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: movie_service_db
       MYSQL_USER: movie_service
       MYSQL_PASSWORD: moviepassword
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3307:3306"
     volumes:
@@ -31,13 +33,14 @@ services:
       - movietix-network
 
   mysql-theater:
-    image: mysql:8.0
+    image: mysql/mysql-server:8.0
     container_name: mysql-theater
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: theater_service_db
       MYSQL_USER: theater_service
       MYSQL_PASSWORD: theaterpassword
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3308:3306"
     volumes:
@@ -46,13 +49,14 @@ services:
       - movietix-network
 
   mysql-showtime:
-    image: mysql:8.0
+    image: mysql/mysql-server:8.0
     container_name: mysql-showtime
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: showtime_service_db
       MYSQL_USER: showtime_service
       MYSQL_PASSWORD: showtimepassword
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3309:3306"
     volumes:
@@ -61,13 +65,14 @@ services:
       - movietix-network
 
   mysql-booking:
-    image: mysql:8.0
+    image: mysql/mysql-server:8.0
     container_name: mysql-booking
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: booking_service_db
       MYSQL_USER: booking_service
       MYSQL_PASSWORD: bookingpassword
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3310:3306"
     volumes:
@@ -78,7 +83,7 @@ services:
   # Eureka Server
   eureka-server:
     build:
-      context: ./eureka-server
+      context: ./backend/eureka-server
       dockerfile: Dockerfile
     container_name: eureka-server
     ports:
@@ -91,7 +96,7 @@ services:
   # Config Server
   config-server:
     build:
-      context: ./config-server
+      context: ./backend/config-server
       dockerfile: Dockerfile
     container_name: config-server
     ports:
@@ -107,7 +112,7 @@ services:
   # User Service
   user-service:
     build:
-      context: ./user-service
+      context: ./backend/user-service
       dockerfile: Dockerfile
     container_name: user-service
     ports:
@@ -126,7 +131,7 @@ services:
   # Movie Service
   movie-service:
     build:
-      context: ./movie-service
+      context: ./backend/movie-service
       dockerfile: Dockerfile
     container_name: movie-service
     ports:
@@ -145,7 +150,7 @@ services:
   # Theater Service
   theater-service:
     build:
-      context: ./theater-service
+      context: ./backend/theater-service
       dockerfile: Dockerfile
     container_name: theater-service
     ports:
@@ -164,7 +169,7 @@ services:
   # Showtime Service
   showtime-service:
     build:
-      context: ./showtime-service
+      context: ./backend/showtime-service
       dockerfile: Dockerfile
     container_name: showtime-service
     ports:
@@ -185,7 +190,7 @@ services:
   # Booking Service
   booking-service:
     build:
-      context: ./booking-service
+      context: ./backend/booking-service
       dockerfile: Dockerfile
     container_name: booking-service
     ports:
@@ -206,7 +211,7 @@ services:
   # API Gateway
   api-gateway:
     build:
-      context: ./api-gateway
+      context: ./backend/api-gateway
       dockerfile: Dockerfile
     container_name: api-gateway
     ports:
@@ -225,6 +230,24 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+
+  # Frontend Next.js Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: movietix-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - api-gateway
+    networks:
+      - movietix-network
+    environment:
+      - NEXT_PUBLIC_API_BASE_URL=http://localhost:8080
 
 volumes:
   mysql_user_data:
